@@ -16,10 +16,10 @@ TextureImporter:
     second: LRU
   - first:
       213: 4955558361472541536
-    second: Full
+    second: Borderless
   - first:
       213: 3874697837201819620
-    second: Border_Full
+    second: LRUD
   - first:
       213: 8684880688544188274
     second: LR
@@ -106,49 +106,49 @@ TextureImporter:
     second: RD_2
   - first:
       213: -3475450775731440034
-    second: Full_123
+    second: _123
   - first:
       213: -4518164420970560379
-    second: Full_1
+    second: _1
   - first:
       213: -87706154659978815
-    second: Full_2
+    second: _2
   - first:
       213: 2849322946745905711
-    second: Full_3
+    second: _3
   - first:
       213: 2954874719234457090
-    second: Full_4
+    second: _4
   - first:
       213: -4812887324720471050
-    second: Full_13
+    second: _134
   - first:
       213: -6871993172131726970
-    second: Full_124
+    second: _124
   - first:
       213: -5404769074362753093
-    second: Full_234
+    second: _234
   - first:
       213: -3850968363183882240
-    second: Full_14
+    second: _14
   - first:
       213: 3959655266875948395
-    second: Full_
+    second: _13
   - first:
       213: 4665153307322292559
-    second: Full_12
+    second: _12
   - first:
       213: 3435477676709629259
-    second: Full_23
+    second: _23
   - first:
       213: -6004171959668870967
-    second: Full_24
+    second: _24
   - first:
       213: 1111442601610821880
-    second: Full_34
+    second: _34
   - first:
       213: -5295233790880044590
-    second: Full_1234
+    second: _1234
   - first:
       213: 2751839459316318652
     second: __Void
@@ -373,7 +373,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full
+      name: Borderless
       rect:
         serializedVersion: 2
         x: 144
@@ -394,7 +394,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Border_Full
+      name: LRUD
       rect:
         serializedVersion: 2
         x: 176
@@ -418,7 +418,7 @@ TextureImporter:
       name: LR
       rect:
         serializedVersion: 2
-        x: 207
+        x: 208
         y: 208
         width: 16
         height: 16
@@ -1003,7 +1003,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_123
+      name: _123
       rect:
         serializedVersion: 2
         x: 208
@@ -1024,7 +1024,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_1
+      name: _1
       rect:
         serializedVersion: 2
         x: 16
@@ -1045,7 +1045,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_2
+      name: _2
       rect:
         serializedVersion: 2
         x: 48
@@ -1066,7 +1066,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_3
+      name: _3
       rect:
         serializedVersion: 2
         x: 80
@@ -1087,7 +1087,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_4
+      name: _4
       rect:
         serializedVersion: 2
         x: 112
@@ -1108,7 +1108,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_13
+      name: _134
       rect:
         serializedVersion: 2
         x: 144
@@ -1129,7 +1129,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_124
+      name: _124
       rect:
         serializedVersion: 2
         x: 176
@@ -1150,7 +1150,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_234
+      name: _234
       rect:
         serializedVersion: 2
         x: 208
@@ -1171,7 +1171,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_14
+      name: _14
       rect:
         serializedVersion: 2
         x: 16
@@ -1192,7 +1192,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_
+      name: _13
       rect:
         serializedVersion: 2
         x: 48
@@ -1213,7 +1213,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_12
+      name: _12
       rect:
         serializedVersion: 2
         x: 80
@@ -1234,7 +1234,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_23
+      name: _23
       rect:
         serializedVersion: 2
         x: 112
@@ -1255,7 +1255,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_24
+      name: _24
       rect:
         serializedVersion: 2
         x: 144
@@ -1276,7 +1276,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_34
+      name: _34
       rect:
         serializedVersion: 2
         x: 176
@@ -1297,7 +1297,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Full_1234
+      name: _1234
       rect:
         serializedVersion: 2
         x: 208
