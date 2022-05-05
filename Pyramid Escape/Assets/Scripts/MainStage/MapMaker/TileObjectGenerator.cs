@@ -82,12 +82,16 @@ namespace MainStage.MapMaker
             if (!IsEmptyTile(Map[y, x]))
             {
                 var boxCollider = targetTile.AddComponent<BoxCollider2D>();
-                var shadowCaster = targetTile.AddComponent<ShadowCaster2D>();
-                
                 boxCollider.usedByComposite = true;
-                shadowCaster.selfShadows = false;
-                shadowCaster.castsShadows = true;
-                shadowCaster.useRendererSilhouette = true;
+
+                if (UsingViewEffect)
+                {
+                    var shadowCaster = targetTile.AddComponent<ShadowCaster2D>();
+                    shadowCaster.selfShadows = false;
+                    shadowCaster.castsShadows = true;
+                    shadowCaster.useRendererSilhouette = true;
+                }
+
             }
             targetTile.SetActive(false);
         }

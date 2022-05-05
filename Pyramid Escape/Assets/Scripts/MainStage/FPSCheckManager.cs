@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,11 @@ public class FPSCheckManager : MonoBehaviour
 {
     private float _deltaTime;
     [SerializeField] private Text fpsText;
+
+    private void Start()
+    {
+        // Application.targetFrameRate = 30;
+    }
 
     void Update()
     {

@@ -16,11 +16,14 @@ namespace MainStage.MapMaker
      * TileObjectGenerator ->       (타일 생성)
      * MapDesigner                  (맵 수정)
     */ 
+    
     public class MapModifier : TileObjectGenerator
     {
-        public DateTime time0;
+        private Camera _selectedCamera; 
+        private DateTime time0;
         protected override void Start()
         {
+            _selectedCamera = Camera.main;
             time0 = DateTime.Now;
             base.Start();
 
@@ -28,12 +31,20 @@ namespace MainStage.MapMaker
             StartCoroutine(ModifyTiles());
         }
 
+        private bool CheckObjectIsInCamera(GameObject target)
+        {
+            var screenPoint = _selectedCamera.WorldToViewportPoint(target.transform.position);
+            var onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+            return onScreen;
+        }
+        
         private IEnumerator ModifyTiles()
         {
             for (var y = 0; y < MapY; y++)
             {
                 for (var x = 0; x < MapX; x++)
                 {
+                    
                     if (tileMapObjects[y, x] == null)
                     {
                         continue;
@@ -62,8 +73,12 @@ namespace MainStage.MapMaker
             }
 
             gameObject.AddComponent<CompositeCollider2D>();
-            gameObject.AddComponent<CompositeShadowCaster2D>();
             
+            if (UsingViewEffect)
+            {
+                gameObject.AddComponent<CompositeShadowCaster2D>();
+            }
+
             yield return null;
             
             var time1 = DateTime.Now;
@@ -78,10 +93,10 @@ namespace MainStage.MapMaker
 
             if (Camera.main is { })
             {
-                Camera.main.transform.position = new Vector3(176, 7, -10);
+                Camera.main.transform.position = new Vector3(194, -2, -10);
             }
         }
-
+        
         private TileCode GetTileCode(int x, int y)
         {
             return FixTileType(GetBorderTile(x, y) | GetDotTile(x, y));
