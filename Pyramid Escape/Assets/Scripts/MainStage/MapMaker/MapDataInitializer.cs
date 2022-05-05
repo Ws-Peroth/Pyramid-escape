@@ -15,7 +15,7 @@ namespace MainStage.MapMaker
 
     public class MapDataInitializer : MonoBehaviour
     {
-        [field: SerializeField] protected bool UsingViewEffect { get; set; } = false;
+        [field: SerializeField] protected bool UsingViewEffect { get; set; }
         protected TileCode[,] Map { get; private set; }
         protected int MapX { get; set; }
         protected int MapY { get; set; }
