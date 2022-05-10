@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class FPSCheckManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class FPSCheckManager : MonoBehaviour
 
     private void Start()
     {
-        // Application.targetFrameRate = 30;
+        // Application.targetFrameRate = 60;
     }
 
     void Update()

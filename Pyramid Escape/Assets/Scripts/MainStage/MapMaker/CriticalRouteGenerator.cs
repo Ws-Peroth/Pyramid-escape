@@ -17,7 +17,6 @@ namespace MainStage.MapMaker
         protected override void InitializeMapData(int x = MapData.X, int y = MapData.Y)
         {
             base.InitializeMapData(x, y);
-            print("Generate Critical Route Generator Start");
             var generateRoute = Task.Run(GenerateChunk);
             generateRoute.Wait();
         }
@@ -26,12 +25,10 @@ namespace MainStage.MapMaker
         private void GenerateChunk()
         {
             const int filledPercent = 25;
-            int cnt = 0;
             Stack<Chunk> chunkStack;
             
             while (true)
             {
-                print($"loop count: {++cnt}");
                 chunkStack = new Stack<Chunk>();
                 ResetVisitChunk();
                 ChunkTraveler(chunkStack);

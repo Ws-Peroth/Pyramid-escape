@@ -8,9 +8,6 @@ namespace MainStage.MapMaker
 {
     public class TileObjectGenerator : MapDesigner
     {
-
-        [field: SerializeField] 
-        protected List<Sprite> tileSprites;
         protected GameObject[,] tileMapObjects;
 
         // Dummy Tile Object
@@ -22,11 +19,10 @@ namespace MainStage.MapMaker
         protected virtual void Start()
         {
             // 타일 생성 시작 지점 설정
-            if (Camera.main is { })
-            {
-                var position = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height));
-                _worldStart = new Vector3((int) position.x, (int) position.y, (int) position.z);
-            }
+            if (Camera.main is null) return;
+            
+            var position = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height));
+            _worldStart = new Vector3(0, 0, -10);
         }
 
         protected override void InitializeMapData(int x = MapData.X, int y = MapData.Y)
@@ -66,8 +62,9 @@ namespace MainStage.MapMaker
                     Quaternion.identity,
                     transform
                 );
-
+            
             tileMapObjects[y, x] = newTile;
+            tileMapObjects[y, x].GetComponent<SpriteRenderer>().material = shader;
             SetupMapObject(x, y);
         }
         

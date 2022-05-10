@@ -41,7 +41,6 @@ namespace MainStage.MapMaker
         protected override void InitializeMapData(int x = MapData.X, int y = MapData.Y)
         {
             base.InitializeMapData(x, y);
-            print("Generate Chunk Start");
 
             var setup = Task.Run(SetupChunkMap);
             setup.Wait();
@@ -70,25 +69,20 @@ namespace MainStage.MapMaker
         {
             chunkMap[0] = new Chunk[1];
             chunkMap[0][0] = GetStartChunk();
-            print($"StartChunk = x: 0, y: 0");
         }
 
         private void SetEndChunk(int height, int length)
         {
             var chunkIndex = Rand.Next(length);
 
-            print($"size = (x:{length}, y:{height})" +
-                  $"limit = {height * 2 - 1}");
 
             var endChunk = chunkMap[height - 1][chunkIndex];
             
             endChunk.Type = ChunkType.Finish;
             endChunk.IsCriticalChunk = true;
-            print($"EndChunk = x: {chunkIndex}, y: {height - 1}");
         }
         private void SetupChunkMap()
         {
-            print($"Setup : {ChunkSize}, Y={MapY}, X={MapX}");
             var height = ChunkHeight();
             chunkMap = new Chunk[height][];
 
@@ -124,7 +118,6 @@ namespace MainStage.MapMaker
                 }
             }
 
-            print(height);
             SetEndChunk(height, height * 2 - 1);
         }
 

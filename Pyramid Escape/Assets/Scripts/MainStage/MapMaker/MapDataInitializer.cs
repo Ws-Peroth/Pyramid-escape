@@ -2,20 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace MainStage.MapMaker
 {
     public struct MapData
     {
         public const int ChunkSize = 5; // 청크 크기 : 반드시 홀수여야함
-        public const int Y = 200; // Map y 크기 => ChunkSize * N + 6
-        public const int X = 100; // MapY * 2 + 1
+        public const int Y = 50; // Map y 크기 => ChunkSize * N + 6
+        public const int X = 50; // MapY * 2 + 1
         public const TileCode Tile = TileCode.Borderless;
     }
 
-    public class MapDataInitializer : MonoBehaviour
+    public class MapDataInitializer : Singleton<MapDataInitializer>
     {
-        [field: SerializeField] protected bool UsingViewEffect { get; set; }
+        [SerializeField] protected Player player;
+        public bool GenerateFinish { get; set; } = false;
+        [SerializeField] protected Optimizer optimizer;
+        [SerializeField] protected Material shader;
+        [SerializeField] protected Tilemap tilemap;
+        [SerializeField] protected TilemapRenderer tilemapRenderer;
+        [field: SerializeField] public bool UsingViewEffect { get; set; }
         protected TileCode[,] Map { get; private set; }
         protected int MapX { get; set; }
         protected int MapY { get; set; }
@@ -71,14 +78,6 @@ namespace MainStage.MapMaker
             foreach (var sprite in spriteArray.ToList())
             {
                 _sprites.Add(sprite.name, sprite);
-            }
-            
-            _sprites.Add("PyramidWall_Tile", Resources.Load<Sprite>("TileMap/PyramidWall_Tile"));
-            
-            if(_sprites["PyramidWall_Tile"] == null)
-            {
-                Debug.LogError("Missing Resources : PyramidWall_Tile");
-                throw new MissingReferenceException();
             }
         }
 

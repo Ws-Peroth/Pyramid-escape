@@ -25,8 +25,6 @@ namespace MainStage.MapMaker
     {
         protected override void InitializeMapData(int x = MapData.X, int y = MapData.Y)
         {
-
-            print($"Total Position : {MapX}, {MapY}");
             base.InitializeMapData(x, y);
 
             var t = Task.Run(SetTiles);

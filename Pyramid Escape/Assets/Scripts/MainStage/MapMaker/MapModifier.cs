@@ -15,88 +15,120 @@ namespace MainStage.MapMaker
      * ChunkDesigner ->             (청크 디자인)
      * TileObjectGenerator ->       (타일 생성)
      * MapDesigner                  (맵 수정)
-    */ 
-    
+    */
     public class MapModifier : TileObjectGenerator
     {
+        private const TileCode HasWall = TileCode.Down | TileCode.Up | TileCode.Left | TileCode.Right;
         private Camera _selectedCamera; 
         private DateTime time0;
+        
         protected override void Start()
+        {
+            InitializeMapData();
+        }
+
+        protected override void InitializeMapData(int x = MapData.X, int y = MapData.Y)
         {
             _selectedCamera = Camera.main;
             time0 = DateTime.Now;
             base.Start();
-
-            InitializeMapData();
+            base.InitializeMapData(x, y);
             StartCoroutine(ModifyTiles());
         }
 
-        private bool CheckObjectIsInCamera(GameObject target)
-        {
-            var screenPoint = _selectedCamera.WorldToViewportPoint(target.transform.position);
-            var onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
-            return onScreen;
-        }
-        
         private IEnumerator ModifyTiles()
         {
             for (var y = 0; y < MapY; y++)
             {
                 for (var x = 0; x < MapX; x++)
                 {
+                    if (tileMapObjects[y, x] == null) continue;
                     
-                    if (tileMapObjects[y, x] == null)
-                    {
-                        continue;
-                    }
-
                     tileMapObjects[y, x].SetActive(true);
-
+                    
                     if (IsEmptyTile(Map[y, x]))
                     {
                         Destroy(tileMapObjects[y, x].GetComponent<ShadowCaster2D>());
                         Destroy(tileMapObjects[y, x].GetComponent<BoxCollider2D>());
                         continue;
                     }
+                    
+                    var tileOptimizer = tileMapObjects[y, x].GetComponent<SpriteOptimizer>();
+                    tileOptimizer.AddMethod(optimizer);
+                    
                     var tileType = GetTileCode(x, y);
-
-                    if (tileType == TileCode.VoidTile)
-                    {
-                        print($"x: {x}, y: {y}");
-                    }
-
                     Map[y, x] = tileType;
-                    tileMapObjects[y, x].GetComponent<SpriteRenderer>().sprite = GetSprite(GetFileName(tileType));
+                    HideShadowCast(x, y);
+                    
+                    var tileSpriteRenderer = tileMapObjects[y, x].GetComponent<SpriteRenderer>();
+                    tileSpriteRenderer.sprite = GetSprite(GetFileName(tileType));
+                    // tileSpriteRenderer.enabled = false;
                 }
 
                 yield return null;
             }
-
             gameObject.AddComponent<CompositeCollider2D>();
             
             if (UsingViewEffect)
             {
                 gameObject.AddComponent<CompositeShadowCaster2D>();
             }
-
             yield return null;
-            
+            if (Camera.main is null)
+            {
+                yield break;
+            }
+            PrintGenerateTime();
+            PlayerSpawn();
+            player.LightOn();
+        }
+
+        private void PrintGenerateTime()
+        {
             var time1 = DateTime.Now;
             var spanStart = new TimeSpan(time0.Day, time0.Hour, time0.Minute, time0.Second, time0.Millisecond);
             var spanEnd = new TimeSpan(time1.Day, time1.Hour, time1.Minute, time1.Second, time1.Millisecond);
             var gap = spanEnd.Subtract(spanStart);
-            
-            print("Map generate End");
-            print($"Start Time\t{time0:h:mm:ss tt}");
-            print($"Finish Time\t{time1:h:mm:ss tt}");
-            print($"total time : {gap}");
-
-            if (Camera.main is { })
-            {
-                Camera.main.transform.position = new Vector3(194, -2, -10);
-            }
+            GenerateFinish = true;
+            print($"Map generate End\ntotal time : {gap}");
         }
         
+        private void PlayerSpawn()
+        {
+            var startChunk = criticalChunks[0].Start;
+            var indexX = (int) Avg(startChunk.x, startChunk.x + ChunkSize);
+            var indexY = (int) Avg(startChunk.y, startChunk.y + ChunkSize);
+            print($"{indexX}, {indexY}");
+            var setPosition = tileMapObjects[indexY, indexX].transform.position;
+            player.transform.position = setPosition;
+            optimizer.CallActivator(setPosition.x, setPosition.y);
+        }
+
+        private float Avg(int a, int b) => (a + b) / 2f;
+        
+        private void HideShadowCast(int x, int y)
+        {
+            if (!UsingViewEffect) return;
+            
+            var tileType = Map[y, x];
+            var isCastOff = false;
+            isCastOff = (tileType & HasWall) == 0;
+            isCastOff = isCastOff || x == 0 || x == MapX - 1;
+            isCastOff = isCastOff || y == 0 || y == MapY - 1;
+            isCastOff = isCastOff || tileMapObjects[y, x - 1] == null || tileMapObjects[y, x + 1] == null;
+
+            if (!isCastOff) return;
+            
+            var tileShadowCaster2D = tileMapObjects[y, x].GetComponent<ShadowCaster2D>();
+            if ((tileType & HasWall) == 0)
+            {
+                tileShadowCaster2D.useRendererSilhouette = false;
+                tileShadowCaster2D.selfShadows = false;
+            }
+
+            tileShadowCaster2D.castsShadows = false;
+        }
+
         private TileCode GetTileCode(int x, int y)
         {
             return FixTileType(GetBorderTile(x, y) | GetDotTile(x, y));
