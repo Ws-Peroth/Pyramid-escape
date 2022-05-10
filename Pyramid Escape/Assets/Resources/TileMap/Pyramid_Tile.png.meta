@@ -64,7 +64,7 @@ TextureImporter:
     second: RU_3
   - first:
       213: 3788768134876954942
-    second: __Black
+    second: PyramidWall_Tile
   - first:
       213: 9082371367000216570
     second: U
@@ -709,7 +709,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: __Black
+      name: PyramidWall_Tile
       rect:
         serializedVersion: 2
         x: 208
