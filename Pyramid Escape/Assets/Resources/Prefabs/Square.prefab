@@ -97,4 +97,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 2799690487390977640}
   shadowCaster2D: {fileID: 0}
-  creatEnd: 0

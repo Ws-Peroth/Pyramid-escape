@@ -8,8 +8,6 @@ namespace MainStage.MapMaker
 {
     public class TileObjectGenerator : MapDesigner
     {
-        protected GameObject[,] tileMapObjects;
-
         // Dummy Tile Object
         [SerializeField] private GameObject tile;
         private static Vector3 _worldStart;
@@ -62,7 +60,6 @@ namespace MainStage.MapMaker
                     Quaternion.identity,
                     transform
                 );
-            
             tileMapObjects[y, x] = newTile;
             tileMapObjects[y, x].GetComponent<SpriteRenderer>().material = shader;
             SetupMapObject(x, y);

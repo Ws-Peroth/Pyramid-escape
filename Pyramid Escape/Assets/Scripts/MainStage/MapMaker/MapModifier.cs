@@ -52,17 +52,15 @@ namespace MainStage.MapMaker
                         Destroy(tileMapObjects[y, x].GetComponent<BoxCollider2D>());
                         continue;
                     }
-                    
-                    var tileOptimizer = tileMapObjects[y, x].GetComponent<SpriteOptimizer>();
-                    tileOptimizer.AddMethod(optimizer);
-                    
                     var tileType = GetTileCode(x, y);
                     Map[y, x] = tileType;
                     HideShadowCast(x, y);
                     
+                    var tileShadowCaster = tileMapObjects[y, x].GetComponent<ShadowCaster2D>();
                     var tileSpriteRenderer = tileMapObjects[y, x].GetComponent<SpriteRenderer>();
                     tileSpriteRenderer.sprite = GetSprite(GetFileName(tileType));
-                    // tileSpriteRenderer.enabled = false;
+                    tileSpriteRenderer.enabled = false;
+                    tileShadowCaster.enabled = false;
                 }
 
                 yield return null;
@@ -78,9 +76,10 @@ namespace MainStage.MapMaker
             {
                 yield break;
             }
+            GenerateFinish = true;
             PrintGenerateTime();
             PlayerSpawn();
-            player.LightOn();
+            player.SetLight(true);
         }
 
         private void PrintGenerateTime()
@@ -89,7 +88,6 @@ namespace MainStage.MapMaker
             var spanStart = new TimeSpan(time0.Day, time0.Hour, time0.Minute, time0.Second, time0.Millisecond);
             var spanEnd = new TimeSpan(time1.Day, time1.Hour, time1.Minute, time1.Second, time1.Millisecond);
             var gap = spanEnd.Subtract(spanStart);
-            GenerateFinish = true;
             print($"Map generate End\ntotal time : {gap}");
         }
         
@@ -101,7 +99,6 @@ namespace MainStage.MapMaker
             print($"{indexX}, {indexY}");
             var setPosition = tileMapObjects[indexY, indexX].transform.position;
             player.transform.position = setPosition;
-            optimizer.CallActivator(setPosition.x, setPosition.y);
         }
 
         private float Avg(int a, int b) => (a + b) / 2f;

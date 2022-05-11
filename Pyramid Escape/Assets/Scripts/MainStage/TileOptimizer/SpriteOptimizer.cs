@@ -7,22 +7,11 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class SpriteOptimizer : MonoBehaviour
 {
-    private const float DistanceX = 10;
-    private const float DistanceY = 6;
+    public const float DistanceX = 10;
+    public const float DistanceY = 6;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private ShadowCaster2D shadowCaster2D;
     private Vector3 _position;
-
-    public void AddMethod(Optimizer optimizer)
-    {
-        if(optimizer is null)
-        {
-            print("Optimizer is null");
-            return; 
-        }
-
-        optimizer.Activator += ActivateSprite;
-    }
 
     private static float Abs(float x) => x < 0 ? -x : x;
     
@@ -48,7 +37,7 @@ public class SpriteOptimizer : MonoBehaviour
         shadowCaster2D.enabled = status;
     }
     
-    private void ActivateSprite(float x1, float y1, bool generateStatus)
+    public void ActivateSprite(float x1, float y1, bool generateStatus)
     {
         if(!generateStatus) return;
         
@@ -57,5 +46,4 @@ public class SpriteOptimizer : MonoBehaviour
         var y = _position.y - y1;
         SetActivate(Abs(x) < DistanceX && Abs(y) < DistanceY);
     }
-
 }

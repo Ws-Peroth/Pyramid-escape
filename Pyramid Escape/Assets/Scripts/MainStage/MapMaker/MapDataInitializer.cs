@@ -16,6 +16,7 @@ namespace MainStage.MapMaker
 
     public class MapDataInitializer : Singleton<MapDataInitializer>
     {
+        public GameObject[,] tileMapObjects;
         [SerializeField] protected Player player;
         public bool GenerateFinish { get; set; } = false;
         [SerializeField] protected Optimizer optimizer;
@@ -23,9 +24,9 @@ namespace MainStage.MapMaker
         [SerializeField] protected Tilemap tilemap;
         [SerializeField] protected TilemapRenderer tilemapRenderer;
         [field: SerializeField] public bool UsingViewEffect { get; set; }
-        protected TileCode[,] Map { get; private set; }
-        protected int MapX { get; set; }
-        protected int MapY { get; set; }
+        public TileCode[,] Map { get; private set; }
+        public int MapX { get; set; }
+        public int MapY { get; set; }
         protected int ChunkSize { get; set; }
 
         private readonly Dictionary<string, Sprite> _sprites = new Dictionary<string, Sprite>();
@@ -133,7 +134,7 @@ namespace MainStage.MapMaker
             return tileType;
         }
 
-        protected static bool IsEmptyTile(TileCode tile) => tile == TileCode.VoidTile || tile == TileCode.Wall;
+        public static bool IsEmptyTile(TileCode tile) => tile == TileCode.VoidTile || tile == TileCode.Wall;
         
         protected static TileCode FixTileType(TileCode tileType)
         {
