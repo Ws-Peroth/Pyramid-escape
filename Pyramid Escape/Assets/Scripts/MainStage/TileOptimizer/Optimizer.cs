@@ -45,8 +45,11 @@ public class Optimizer : MonoBehaviour
             {
                 var temp = TileObjectGenerator.instance.tileMapObjects[i, j];
                 if(temp ==  null) continue;
+                var optimizer = temp.GetComponent<SpriteOptimizer>();
+                optimizer.SwitchMonsterActive(x, y);
+                
                 if(MapDataInitializer.IsEmptyTile(MapDataInitializer.instance.Map[i, j])) continue;
-                temp.GetComponent<SpriteOptimizer>().ActivateSprite(x, y, MapDataInitializer.instance.GenerateFinish);
+                optimizer.ActivateSprite(x, y, MapDataInitializer.instance.GenerateFinish);
             }
         }
 
