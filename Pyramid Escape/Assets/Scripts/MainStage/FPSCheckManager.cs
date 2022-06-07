@@ -12,7 +12,7 @@ public class FPSCheckManager : MonoBehaviour
 
     private void Start()
     {
-        // Application.targetFrameRate = 60;
+        // Application.targetFrameRate = 120;
     }
 
     void Update()
