@@ -6,24 +6,16 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 namespace MainStage.MapMaker
 {
-    /*
-     * MapDataInitializer ->        (초기화)
-     * MapGenerator ->              (기초 맵 생성)
-     * ChunkGenerator ->            (청크 생성)
-     * CriticalRouteGenerator ->    (핵심 경로 생성)
-     * ChunkConnectionGenerator ->  (전체 경로 생성)
-     * ChunkDesigner ->             (청크 디자인)
-     * TileObjectGenerator ->       (타일 생성)
-     * MapDesigner                  (맵 수정)
-    */
     public class MapModifier : TileObjectGenerator
     {
         private const TileCode HasWall = TileCode.Down | TileCode.Up | TileCode.Left | TileCode.Right;
         private Camera _selectedCamera; 
         private DateTime time0;
+        private Action _nextLogic;
         
-        protected override void Start()
+        protected void StartMapGenerate(Action nextAction)
         {
+            _nextLogic = nextAction;
             InitializeMapData();
         }
 
@@ -79,7 +71,9 @@ namespace MainStage.MapMaker
             GenerateFinish = true;
             PrintGenerateTime();
             PlayerSpawn();
-            player.SetLight(true);
+            playerMoveController.SetLight(true);
+
+            _nextLogic();
         }
 
         private void PrintGenerateTime()
@@ -94,15 +88,13 @@ namespace MainStage.MapMaker
         private void PlayerSpawn()
         {
             var startChunk = criticalChunks[0].Start;
-            var indexX = (int) Avg(startChunk.x, startChunk.x + ChunkSize);
-            var indexY = (int) Avg(startChunk.y, startChunk.y + ChunkSize);
+            var indexX = (int) Calc.Avg(startChunk.x, startChunk.x + ChunkSize);
+            var indexY = (int) Calc.Avg(startChunk.y, startChunk.y + ChunkSize);
             print($"{indexX}, {indexY}");
             var setPosition = tileMapObjects[indexY, indexX].transform.position;
-            player.transform.position = setPosition;
+            setPosition = new Vector3(setPosition.x, setPosition.y, -3);
+            playerMoveController.transform.position = setPosition;
         }
-
-        private float Avg(int a, int b) => (a + b) / 2f;
-        
         private void HideShadowCast(int x, int y)
         {
             if (!UsingViewEffect) return;

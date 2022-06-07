@@ -17,12 +17,10 @@ namespace MainStage.MapMaker
     public class MapDataInitializer : Singleton<MapDataInitializer>
     {
         public GameObject[,] tileMapObjects;
-        [SerializeField] protected Player player;
+        [SerializeField] protected PlayerMoveController playerMoveController;
         public bool GenerateFinish { get; set; } = false;
         [SerializeField] protected Optimizer optimizer;
-        [SerializeField] protected Material shader;
-        [SerializeField] protected Tilemap tilemap;
-        [SerializeField] protected TilemapRenderer tilemapRenderer;
+        // [SerializeField] protected Material shader;
         [field: SerializeField] public bool UsingViewEffect { get; set; }
         public TileCode[,] Map { get; private set; }
         public int MapX { get; set; }

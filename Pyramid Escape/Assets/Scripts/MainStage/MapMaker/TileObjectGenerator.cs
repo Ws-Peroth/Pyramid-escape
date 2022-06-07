@@ -61,7 +61,7 @@ namespace MainStage.MapMaker
                     transform
                 );
             tileMapObjects[y, x] = newTile;
-            tileMapObjects[y, x].GetComponent<SpriteRenderer>().material = shader;
+            // tileMapObjects[y, x].GetComponent<SpriteRenderer>().material = shader;
             SetupMapObject(x, y);
         }
         

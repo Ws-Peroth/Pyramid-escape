@@ -49,7 +49,6 @@ namespace MainStage.MapMaker
             
             while (true)
             {
-//                print($"travel :{++cnt}, connect = {_connectDirection}");
                 var (direction, chunk) = GetNextChunk(currentChunk);
                 currentChunk.IsVisited = true;
 
@@ -99,7 +98,6 @@ namespace MainStage.MapMaker
             }
 
             var index = Rand.Next(0, chunkList.Count);
-//            print(chunkList.Count);
             return chunkList.Count == 0 ? (ConnectDirection.None, null) : chunkList[index];
         }
         private void ResetVisitChunk()

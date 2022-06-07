@@ -38,6 +38,7 @@ namespace MainStage.MapMaker
                     
                     Map[y, x] = TileCode.Wall;
                     
+                    // TODO : condition to "var bool"
                     if (y == yStart && (connect & ConnectDirection.Up) == 0)
                     {
                         Map[y, x] = TileCode.Borderless;
@@ -61,9 +62,21 @@ namespace MainStage.MapMaker
             }
         }
         
-        private static void SetChunkType()
+        private void SetChunkType()
         {
+            const int startChunkType = (int) ChunkType.Monster; // ChunkType.Shop;
+            const int endChunkType = (int) ChunkType.Monster + 1; // ChunkType.Room + 1;
+            
             // 다시 고민해 볼 것
+            for (var i = 5; i < criticalChunks.Count - 1; i++)
+            {
+                var chunk = criticalChunks[i];
+                chunk.Type = (ChunkType) Rand.Next(startChunkType, endChunkType);
+                if ((chunk.Connections & ConnectDirection.Down) != 0)
+                {
+                    chunk.Type = ChunkType.Room;
+                }
+            }
         }
     }
 }
