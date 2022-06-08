@@ -56,7 +56,10 @@ namespace MainStage.MapMaker
                     var indexX = i * d + x0;
                     var tile = tileMapObjects[indexY, indexX];
                     var position = tile.transform.position;
-                    var enemy =SpawnCreature(position, PoolCode.Mummy, level++);
+                    var enemy = SpawnCreature(position, PoolCode.Mummy, level++);
+                    var enemyScript = enemy.GetComponent<Enemy>();
+                    var tileOptimizer = tile.GetComponent<SpriteOptimizer>();
+                    enemyScript.optimizeObject = tileOptimizer;
                     tile.GetComponent<SpriteOptimizer>().spawnMonster.Add(enemy);
                 }
                 level++;

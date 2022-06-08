@@ -7,7 +7,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class SpriteOptimizer : MonoBehaviour
 {
-    public bool monsterActivateStatus; 
     public List<GameObject> spawnMonster = new List<GameObject>(); 
     public const float DistanceX = 10;
     public const float DistanceY = 6;
@@ -59,15 +58,18 @@ public class SpriteOptimizer : MonoBehaviour
 
     public void SwitchMonsterActive(float x1, float y1)
     {
-        var status = false;
         foreach (var o in spawnMonster)
         {
+            /*
+            if (o.GetComponent<Enemy>().IsDead)
+            {
+                o.SetActive(false);
+                continue;
+            }
+            */
             var position = o.transform.position;
             var temp = IsNear(position.x, position.y, x1, y1);
-            status = status || temp;
             o.SetActive(temp);
         }
-
-        monsterActivateStatus = status;
     }
 }

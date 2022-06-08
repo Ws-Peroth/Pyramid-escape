@@ -13,7 +13,7 @@ public class Enemy : Entity
 
     public void RemoveSpawnMonster()
     {
-        var index = optimizeObject.spawnMonster.FindIndex(x => gameObject);
+        var index = optimizeObject.spawnMonster.FindIndex(x => this);
         optimizeObject.spawnMonster.RemoveAt(index);
     }
 }
