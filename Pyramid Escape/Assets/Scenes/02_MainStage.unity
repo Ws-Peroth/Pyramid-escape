@@ -1130,7 +1130,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Hp : 100 / 100'
+  m_Text: 'Hp : 100'
 --- !u!222 &381465184
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1420,6 +1420,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a928e398912ea244964d831f974c05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Level>k__BackingField: 0
+  <Hp>k__BackingField: 0
+  <Attack>k__BackingField: 0
+  <CriticalRate>k__BackingField: 5
+  <CriticalDamage>k__BackingField: 1.5
+  <IsDead>k__BackingField: 0
 --- !u!1 &410485536
 GameObject:
   m_ObjectHideFlags: 0
@@ -3453,6 +3459,14 @@ MonoBehaviour:
   - {fileID: 410485538}
   - {fileID: 239953316}
   - {fileID: 688577963}
+  hpUI:
+  - {fileID: 1018000004}
+  - {fileID: 1827405656}
+  - {fileID: 898321191}
+  - {fileID: 385803251}
+  - {fileID: 1691985160}
+  overHpText: {fileID: 1915361360}
+  hpText: {fileID: 381465183}
 --- !u!1 &1318774687
 GameObject:
   m_ObjectHideFlags: 0

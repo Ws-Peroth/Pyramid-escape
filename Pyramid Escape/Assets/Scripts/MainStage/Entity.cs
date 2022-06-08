@@ -6,12 +6,13 @@ using Random = System.Random;
 
 public class Entity : MonoBehaviour
 {
-    public int Level { get; set; }
-    public float Hp { get; set; }
-    public float Attack { get; set; }
-    public float CriticalRate { get; set; } = 5;
-    public float CriticalDamage { get; set; } = 1.5f;
+    [field: SerializeField] public int Level { get; set; }
+    [field: SerializeField] public float Hp { get; set; }
+    [field: SerializeField] public float Attack { get; set; }
+    [field: SerializeField] public float CriticalRate { get; set; } = 5;
+    [field: SerializeField] public float CriticalDamage { get; set; } = 1.5f;
 
+    [field: SerializeField] public bool IsDead { get; set; }
     public float GetDefaultDamage()
     {
         var isCritical = UnityEngine.Random.Range(0f, 100f) <= CriticalRate;
