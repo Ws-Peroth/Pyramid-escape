@@ -10,7 +10,7 @@ public partial class Mummy
 
         public override State<Mummy> InputHandle(Mummy t)
         {
-            if (t.isDead)
+            if (t.IsDead)
                 return new DeadState();
 
             var col = Physics2D.OverlapBox(t.transform.position, t._searchRange, TileLayer);

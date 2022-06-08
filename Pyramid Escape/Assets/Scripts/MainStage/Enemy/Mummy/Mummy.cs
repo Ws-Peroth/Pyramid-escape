@@ -15,7 +15,6 @@ public partial class Mummy : Enemy
     [SerializeField] private SpriteRenderer mummySpriteRenderer;
     [SerializeField] private bool isWall;
     [SerializeField] private bool isEndOfTile;
-    [SerializeField] private bool isDead;
     
     private const float IdleMoveSpeed = 2f;
     private const float AttackDelay = 2.5f;
@@ -34,7 +33,7 @@ public partial class Mummy : Enemy
         _spriteX = mummySprite.bounds.size.x;
         _spriteY = mummySprite.bounds.size.y;
         _searchRange = new Vector2(_spriteX + 1, _spriteY + 1);
-        isDead = false;
+        IsDead = false;
         
         Hp = DefaultHp;
         Hp += DefaultHp * Level * HpBios;
@@ -75,6 +74,18 @@ public partial class Mummy : Enemy
         smokeScript.Damage = Attack;
         smokeScript.PoisonSmokeOn();
     }
+
+    public override void GetDamage(float damage)
+    {
+        base.GetDamage(damage);
+        print($"Attack : {damage}");
+        Hp -= damage;
+        if (Hp <= 0)
+        {
+            IsDead = true;
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(0.5f, 0.7f, 1, 0.5f);
