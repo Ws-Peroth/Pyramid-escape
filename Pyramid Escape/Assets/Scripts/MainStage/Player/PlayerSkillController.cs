@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
@@ -11,6 +12,7 @@ public class PlayerSkillController : MonoBehaviour
     private const KeyCode SkillKeyCodeQ = KeyCode.Z;
     private const KeyCode SkillKeyCodeE = KeyCode.X;
     private const KeyCode SkillKeyCodeR = KeyCode.C;
+    
     [field: SerializeField] public Skill SkillQ { get; set; }
     [field: SerializeField] public Skill SkillE { get; set; }
     [field: SerializeField] public Skill SkillR { get; set; }
@@ -33,7 +35,7 @@ public class PlayerSkillController : MonoBehaviour
         SkillE.Initialize();
         SkillR.Initialize();
         
-        var inputSkillQ =
+        GameManager.instance.inputSkillQ =
             Observable.EveryUpdate()
                 .Where(_ => Input.GetKeyDown(SkillKeyCodeQ))
                 .Where(_ => SkillQ.CanActivate)
@@ -41,8 +43,8 @@ public class PlayerSkillController : MonoBehaviour
                 {
                     SkillQ.SkillActive(playerSpriteRenderer.flipX);
                 });
-
-        var inputSkillE =
+        
+        GameManager.instance.inputSkillE =
             Observable.EveryUpdate()
                 .Where(_ => Input.GetKeyDown(SkillKeyCodeE))
                 .Where(_ => SkillE.CanActivate)
@@ -52,7 +54,7 @@ public class PlayerSkillController : MonoBehaviour
                     SkillE.SkillActive(playerSpriteRenderer.flipX);
                 });
 
-        var inputSkillR =
+        GameManager.instance.inputSkillR =
             Observable.EveryUpdate()
                 .Where(_ => Input.GetKeyDown(SkillKeyCodeR))
                 .Where(_ => SkillR.CanActivate)

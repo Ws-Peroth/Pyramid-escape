@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
@@ -13,7 +14,9 @@ public class PlayerMoveController : MonoBehaviour
     [SerializeField] private bool isCeil;
     [SerializeField] private bool isHold;
     [SerializeField] private int holdDirection;
-    
+
+    [SerializeField] private CapsuleCollider2D playerCollider;
+    [SerializeField] private Animator playerAnimator;
     [SerializeField] private Sprite playerSprite;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
     [SerializeField] private Light2D visionLight;
@@ -21,18 +24,24 @@ public class PlayerMoveController : MonoBehaviour
     public float Speed { get; set; }
     public float JumpPower { get; set; }
 
-    [SerializeField] private float radius = 0.2f;
+    [SerializeField] private float radius;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float wallJumpPower;
 
     private float _spriteY;
+    private float _spriteX;
+    private static readonly int JumpState = Animator.StringToHash("isJump");
+    private static readonly int WalkState = Animator.StringToHash("isWalk");
+
     #endregion
     public void SetLight(bool status) => visionLight.gameObject.SetActive(status);
     
     private void Start()
     {
-        _spriteY = playerSprite.bounds.size.y;
+        var size = playerCollider.size;
+        _spriteY = size.y;
+        _spriteX = size.x;
     }
     
     private void CheckStatus()
@@ -49,19 +58,29 @@ public class PlayerMoveController : MonoBehaviour
 
     private void CheckIsGround(int layer, Vector3 currentPosition)
     {
-        if (Input.GetKey(KeyCode.UpArrow)) playerRigidbody2D.AddForce(JumpPower * Vector2.up, ForceMode2D.Impulse);
+        // if (Input.GetKey(KeyCode.UpArrow)) playerRigidbody2D.AddForce(JumpPower * Vector2.up, ForceMode2D.Impulse);
         var position =new Vector2(currentPosition.x, currentPosition.y - _spriteY / 2);
         var col = Physics2D.OverlapCircle(position, radius, layer);
         isGround = !(col is null);
     }
-
     private void CheckIsWall(int layer, Vector3 currentPosition)
     {
-        var positionX = playerSpriteRenderer.flipX ? -_spriteY / 2 : _spriteY / 2;
+        var positionX = playerSpriteRenderer.flipX ? -_spriteX / 2 : _spriteX / 2;
         var position = new Vector2(currentPosition.x + positionX, currentPosition.y);
         var col = Physics2D.OverlapCircle(position, radius, layer);
         isWall = !(col is null);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        var currentPosition = transform.position;
+        var positionX = playerSpriteRenderer.flipX ? -_spriteX / 2 : _spriteX / 2;
+        var position = new Vector2(currentPosition.x + positionX, currentPosition.y);
+
+        Gizmos.DrawSphere(position, radius);
+    }
+    
+    
     private void CheckIsCeil(int layer, Vector3 currentPosition)
     {
         visionLight.gameObject.SetActive(true);
@@ -79,9 +98,15 @@ public class PlayerMoveController : MonoBehaviour
         playerRigidbody2D.velocity = isHold ? Vector2.zero : v;
         isGround = isHold || isGround;
 
+        if (isGround)
+        {
+            playerAnimator.SetBool(JumpState, false);
+        }
         if (isHold)
         {
+            // SetAnimationState((int) PlayerAnimatorState.Hold);
             holdDirection = playerSpriteRenderer.flipX ? -1 : 1;
+            return;
         }
     }
 
@@ -95,17 +120,24 @@ public class PlayerMoveController : MonoBehaviour
 
     private void Move()
     {
+        var isInput = false;
         if (Input.GetKey(LeftKeyCode))
         {
+            isInput = true;
+            playerAnimator.SetBool(WalkState, true);
             playerSpriteRenderer.flipX = true;
             transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
         }
 
         if (Input.GetKey(RightKeyCode))
         {
+            isInput = true;
+            playerAnimator.SetBool(WalkState, true);
             playerSpriteRenderer.flipX = false;
             transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
         }
+
+        if (!isInput) playerAnimator.SetBool(WalkState, false);
     }
 
     private void Jump()
@@ -115,7 +147,7 @@ public class PlayerMoveController : MonoBehaviour
         if(isHold) return;
         if (Input.GetKey(UpKeyCode))
         {
-            print("jump");
+            playerAnimator.SetBool(JumpState, true);
             playerRigidbody2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
     }
@@ -126,7 +158,6 @@ public class PlayerMoveController : MonoBehaviour
         if(!isHold) return;
         if (Input.GetKey(UpKeyCode))
         {
-            print("wall jump");
             var jumpDirection = 0;
             
             if (Input.GetKey(RightKeyCode))
@@ -141,6 +172,7 @@ public class PlayerMoveController : MonoBehaviour
             if(jumpDirection == 0) return;
             if(jumpDirection == holdDirection) return;
             
+            playerAnimator.SetBool(JumpState, true);
             playerRigidbody2D.AddForce(new Vector2(0, wallJumpPower), ForceMode2D.Impulse);
         }
     }
