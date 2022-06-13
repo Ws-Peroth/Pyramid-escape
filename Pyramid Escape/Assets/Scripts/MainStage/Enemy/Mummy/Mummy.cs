@@ -78,7 +78,6 @@ public partial class Mummy : Enemy
     public override void GetDamage(float damage)
     {
         base.GetDamage(damage);
-        print($"Attack : {damage}");
         Hp -= damage;
         if (Hp <= 0)
         {

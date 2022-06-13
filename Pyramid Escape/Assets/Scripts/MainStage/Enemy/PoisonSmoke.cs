@@ -34,7 +34,6 @@ public class PoisonSmoke : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print($"Player : Damage{Damage} ");
             var entity = other.GetComponent<Entity>();
             entity.GetDamage(Damage);
         }

@@ -16,6 +16,7 @@ public partial class Mummy
             //독가스 생성
             t.CreatPoisonSmoke();
             t.RemoveSpawnMonster();
+            GameManager.instance.GetGold(t.Level);
             PoolManager.instance.DestroyPrefab(t.gameObject, PoolCode.Mummy);
         }
 
