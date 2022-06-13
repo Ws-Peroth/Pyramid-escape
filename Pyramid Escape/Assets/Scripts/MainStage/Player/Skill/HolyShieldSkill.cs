@@ -49,6 +49,7 @@ public class HolyShieldSkill : Skill
     
     public override void SkillActive(bool isLeft)
     {
+        GameManager.instance.IsShield = true;
         SkillOverlap++;
         foreach (var t in orbitObjects)
         {
@@ -70,6 +71,7 @@ public class HolyShieldSkill : Skill
     
     public override void SkillInactive()
     {
+        GameManager.instance.IsShield = false;
         SkillOverlap--;
         if (SkillOverlap > 0)
         {

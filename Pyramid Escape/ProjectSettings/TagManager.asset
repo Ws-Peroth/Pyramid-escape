@@ -9,6 +9,8 @@ TagManager:
   - Undefined
   - EnemyHitBox
   - Enemy
+  - Objects
+  - ObjectInteractive
   layers:
   - Default
   - TransparentFX
@@ -21,8 +23,8 @@ TagManager:
   - Lights
   - Enemy
   - EnemyHitBox
-  - 
-  - 
+  - Objects
+  - ObjectInteractive
   - 
   - 
   - 
