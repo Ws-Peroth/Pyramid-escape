@@ -8,6 +8,8 @@ public enum PoolCode
     ThrowSwordSkill,
     PoisonSmoke,
     Mummy,
+    Alter,
+    EndDoor,
     MaxCount
 }
 

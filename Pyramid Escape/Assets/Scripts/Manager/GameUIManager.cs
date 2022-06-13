@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using MainStage.MapMaker;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,10 +17,15 @@ public class GameUIManager : Singleton<GameUIManager>
     private const float HeartHp = 10;
     private readonly bool[] _isSkillDelayUIOn = new bool[3] {false, false, false};
     
+    [SerializeField] public GameObject panel;
     [SerializeField] private Image[] skillFillImages = new Image[3];
     [SerializeField] private Image[] hpUI = new Image[5];
     [SerializeField] private Text overHpText;
+    [SerializeField] private Text timeText;
+    [SerializeField] private Text goldText;
     [SerializeField] private Text hpText;
+
+    [SerializeField] private float time;
     
     public IEnumerator SkillDelay(float skillDelay,  SkillKnid kind)
     {
@@ -41,13 +48,11 @@ public class GameUIManager : Singleton<GameUIManager>
     }
     private void HeartActive(int count, float remain)
     {
-        print($"count: {count}, remain: {remain}, fill: {(int) (remain / HeartHp)}");
         for (var i = 0; i < 5; i++)
         {
             var fill = i < count ? 1 : 0f;
             fill = i == count ? remain / HeartHp : fill;
             hpUI[i].fillAmount = fill;
-            print($"obj [{i}] => {fill}");
         }
     }
 
@@ -64,5 +69,28 @@ public class GameUIManager : Singleton<GameUIManager>
         }
         var v = (int) (heartCount + Mathf.Ceil(remainHp));
         overHpText.text = $"+{v.ToString()}";
+    }
+
+    public void SetGoldText(int gold)
+    {
+        goldText.text = gold.ToString();
+    }
+    
+    private void Start()
+    {
+        timeText.text = "00 : 00 : 00";
+        goldText.text = "0";
+        time = 0;
+        SetGoldText(0);
+    }
+
+    private void Update()
+    {
+        if (MapDataInitializer.instance.GenerateFinish)
+        {
+            time += Time.deltaTime;
+            timeText.text =
+                $"{time / 3600:00} : {time / 60 % 60:00} : {time % 60:00}";
+        }
     }
 }
