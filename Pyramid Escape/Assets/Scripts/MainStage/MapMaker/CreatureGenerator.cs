@@ -33,39 +33,67 @@ namespace MainStage.MapMaker
 
         private void CreatureGenerate()
         {
-            // Todo: Generate Map Structures
             var level = 1;
             foreach (var chunk in criticalChunks)
             {
-                if(chunk.Type != ChunkType.Monster) continue;
-
                 var startChunk = chunk.Start;
-                var spawnMonsterCount = Random.Range(2, 3);
                 var indexY = (int) Calc.Avg(startChunk.y, startChunk.y + ChunkSize);
                 var x0 = FindStartIndex(startChunk.x, indexY);
                 var xn = FindEndIndex(startChunk.x, indexY);
-                var d = (xn - x0) / spawnMonsterCount;
-
-                if (x0 == -1 || xn == -1)
+                
+                if (x0 == -1 || xn == -1) break;
+                if ((chunk.Connections & ConnectDirection.Down) != 0) continue;
+                if (!(chunk.Type > ChunkType.Room || chunk.Type < ChunkType.Start)) continue;
+                
+                switch (chunk.Type)
                 {
-                    break;
+                    case ChunkType.Finish: CreatFinishChunk(x0, xn, indexY); break;
+                    case ChunkType.Alter: CreatAlterChunk(x0, xn, indexY); break;
+                    case ChunkType.Monster: level += CreatMonsterChunk(x0, xn, indexY, level); break;
                 }
-                for (var i = 0; i < spawnMonsterCount; i++)
-                {
-                    if ((chunk.Connections & ConnectDirection.Down) != 0) continue;
-                    var indexX = i * d + x0;
-                    var tile = tileMapObjects[indexY, indexX];
-                    var position = tile.transform.position;
-                    var enemy = SpawnCreature(position, PoolCode.Mummy, level++);
-                    var enemyScript = enemy.GetComponent<Enemy>();
-                    var tileOptimizer = tile.GetComponent<SpriteOptimizer>();
-                    enemyScript.optimizeObject = tileOptimizer;
-                    tile.GetComponent<SpriteOptimizer>().spawnMonster.Add(enemy);
-                }
-                level++;
             }
-            // End of Logic
-            // nextAction();
+        }
+
+        private int CreatMonsterChunk(int x0, int xn, int indexY, int level)
+        {
+            var spawnMonsterCount = Random.Range(2, 3);
+            var d = (xn - x0) / spawnMonsterCount;
+            
+            for (var i = 0; i < spawnMonsterCount; i++)
+            {
+                var indexX = i * d + x0;
+                var tile = tileMapObjects[indexY, indexX];
+                var position = tile.transform.position;
+                var enemy = SpawnCreature(position, PoolCode.Mummy, level++);
+                var enemyScript = enemy.GetComponent<Enemy>();
+                var tileOptimizer = tile.GetComponent<SpriteOptimizer>();
+                enemyScript.optimizeObject = tileOptimizer;
+                tile.GetComponent<SpriteOptimizer>().spawnMonster.Add(enemy);
+            }
+
+            return level + 1;
+        }
+        private void CreatAlterChunk(int x0, int xn, int indexY)
+        {
+            var d = (xn - x0) / 2;
+            var indexX = d + x0;
+            var tile = tileMapObjects[indexY, indexX];
+            var position = tile.transform.position;
+                    
+            var creature = PoolManager.instance.CreatPrefab(PoolCode.Alter);
+            creature.transform.position = new Vector3(position.x + 1, position.y);
+            creature.SetActive(true);
+        }
+        private void CreatFinishChunk(int x0, int xn, int indexY)
+        {
+            var d = (xn - x0) / 2;
+            var indexX = d + x0;
+            var tile = tileMapObjects[indexY, indexX];
+            var position = tile.transform.position;
+
+            var creature = PoolManager.instance.CreatPrefab(PoolCode.EndDoor);
+            creature.transform.position = new Vector3(position.x + 1, position.y);
+            creature.SetActive(true);
         }
 
         private int FindStartIndex(int x, int y)

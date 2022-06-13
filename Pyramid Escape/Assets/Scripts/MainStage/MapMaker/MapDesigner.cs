@@ -74,7 +74,18 @@ namespace MainStage.MapMaker
                 chunk.Type = (ChunkType) Rand.Next(startChunkType, endChunkType);
                 if ((chunk.Connections & ConnectDirection.Down) != 0)
                 {
-                    chunk.Type = ChunkType.Room;
+                    var r = Rand.Next(0, 2);
+                    var room = ChunkType.Room;
+                    if (r == 0)
+                    {
+                        room = ChunkType.Monster;
+                    }
+                    else
+                    {
+                        room = ChunkType.Alter;
+                    }
+
+                    chunk.Type = room;
                 }
             }
         }

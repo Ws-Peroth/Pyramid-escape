@@ -10,10 +10,10 @@ public enum ChunkType
 {
     Shop,     // 상점
     Deal,     // 도박장
-    Treasure, // 랜덤 아이템 획득
-    Trap,     // 함정방
-    Room,     // 방(기본)
+    Room,     // 방 (기본)
+    Alter,    // 플레이어 회복 & 강화
     Monster,  // 몬스터 하우스
+    Boss,     // 보스방
     Start,    // 시작지점
     Finish,   // 끝 청크
     Max
